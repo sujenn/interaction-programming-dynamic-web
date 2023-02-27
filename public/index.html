@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="../src/js/assets/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../src/js/assets/favicon.ico" type="image/x-icon">
+    <title>MovieFinder</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://www.gstatic.com/firebasejs/8.2.5/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-database.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>const React={createElement:Vue.h};</script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <link rel="stylesheet" href="../src/style.css">
+
+</head>
+<body>
+    <div class="page-wrapper">
+        <h1 class="leftMargin2">MovieFinder</h1>
+        <div class="btn-wide btn-normal" onClick ="mainApp.logout()">Sign out</div>
+    </div>
+    <script>$('.leftMargin2').click(()=> window.location.reload())</script>
+    <p class="introduction">
+        Welcome! Search information such as trailer, main plot and provider(s) on your favourite movies and tv series!
+     </p>
+    <div id="app"></div>
+</body>
+    <!-- API -->
+    <script src="../src/js/apiConfig.js"></script>
+    <script src="../src/js/tmdbSource.js"></script>
+    <!-- Model -->
+    <script src="../src/js/app.js" type="text/jsx"></script>
+    <script src="../src/js/dataModel.js" type="text/jsx"></script>
+    <!-- View -->
+    <script src="../src/js/views/searchView.js" type="text/jsx"></script>
+    <script src="../src/js/views/promiseNoData.js" type="text/jsx"></script>
+    <script src="../src/js/views/informationView.js" type="text/jsx"></script>
+    <script src="../src/js/views/watchlistView.js" type="text/jsx"></script>
+    <script src="../src/js/views/historyView.js" type="text/jsx"></script>
+    <script src="../src/js/views/notifyView.js" type="text/jsx"></script>
+
+    <!-- Presenter -->
+    <script src="../src/vuejs/searchPresenter.js" type="text/jsx"></script>
+    <script src="../src/vuejs/informationPresenter.js" type="text/jsx"></script>
+    <script src="../src/vuejs/watchlistPresenter.js" type="text/jsx"></script>
+    <script src="../src/vuejs/historyPresenter.js" type="text/jsx"></script>
+    <script src="../src/vuejs/showPresenter.js" type="text/jsx"></script>
+    <script src="../src/vuejs/notifyPresenter.js" type="text/jsx"></script>
+    <!-- Firebase -->
+    <script src="../src/js/firebase/firebaseConfig.js"></script>
+    <script src="../src/js/firebase/firebaseModel.js"></script>
+    <script src="../src/js/firebase/main.js"></script>
+
+
+    <!-- Deploy Components-->
+    <script type="text/jsx">
+
+        // Reauth firebase as new page is loaded to get currentuser and then render vue
+        let uid;
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/firebase.User
+
+                uid = user.uid;
+                const myModel=new DataModel();
+                const TopLevelModel= {
+                    data(){ return  {model: myModel} },
+                    created(){ LoadSaveModel(this.model) },
+                    render(){  return <App model={this.model} /> }
+                };
+                Vue.render(<TopLevelModel/>,document.getElementById("app"))
+                // ...
+            } else {
+                // User is signed out
+                // ...
+            }
+        });
+    </script>
+
+</html>
