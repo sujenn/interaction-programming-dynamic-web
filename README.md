@@ -8,7 +8,7 @@ of which website/movie theater to visit in order to watch a desired movie.
 **Link to app:**
 [https://moviefinder-kth.web.app/]
 
-**Creaters: **
+**Creaters:**
 Jennifer Su, Erik Vinblad, Jens Ekenblad, Stefan Andres Garrido Valenzuela
 
 **What we have implemented so far:**
